@@ -1,0 +1,34 @@
+{
+  "name": "夸克网盘",
+  "short_name": "夸克网盘",
+  "version": "5.0.0",
+  "description": "点一下云朵图标直接打开夸克网盘首页。",
+  "manifest_version": 3,
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyJgHFdJOo4jLNxY3gBl8uiV493Ub9U88qGNEUxoHlvX3/s5G6pNzrr+AjfylbGYMox6JHbxw8B+Ix0mT8j/K4b+hLv2PvvqJbelNQgX9IrI2jEbt6T5NQSwRzx8KJLxsKD2S23kVqBoGhVZhxIuf2phqwfyi8YzwvuS+x1eD7H9c8jYnmThWPTRWYtqQaJw8kwGgFiMVVWdBRvqAyD2QKFH+68C97a7gofpE0JYEXj6CBZELaZla2J9zhwApPEOWsKeLw+MxZS0kAxqg14hxJzZS6Ce5IQLCaXkrNFrHLrSEkZncnWSqSO/Jj6XTHxDRjg+LYk4a0QTrg9rWXN2BGQIDAQAB",
+  "incognito": "not_allowed",
+  "permissions": [
+    "storage",
+    "tabs",
+    "quarkRoutePrivate"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "夸克网盘",
+    "default_icon": {
+      "16": "sniff.png",
+      "24": "sniff.png",
+      "32": "sniff.png"
+    }
+  },
+  "options_ui": {
+    "page": "popup.html",
+    "open_in_tab": true
+  },
+  "icons": {
+    "48": "sniff.png",
+    "128": "sniff.png"
+  },
+  "commands": {}
+}
