@@ -8,6 +8,29 @@
 
 ---
 
+## 基于哪个安装包
+
+本项目全部的改动，都是在这个安装包（夸克 Mac 版）上做的：
+
+```
+QuarkMac_V2.0.7.222_mac_pf30004_no-update_cloudentry_Build2073740.dmg
+```
+
+| 项 | 值 |
+|---|---|
+| 夸克版本 | **2.0.7.222**（App 内目录：`Contents/Frameworks/Quark Framework.framework/Versions/2.0.7.222`） |
+| `pf30004` | 渠道包标识 |
+| `no-update` | **已去掉自动更新** —— 这点很关键，否则夸克自己升级一次，改过的东西全被覆盖 |
+| `cloudentry` | 这个「云盘入口」改造版的标记 |
+| `Build2073740` | 构建号 |
+| 改动对象 | 该安装包装出来的 `/Applications/Quark.app`：只动它 `Resources/resources.pak` 里的扩展资源槽位（45596 / 45622 / 45623）和白名单（21000），然后重签名 |
+| 成品安装包 | 同目录下的 DMG，见「六、打包成安装包（DMG）」 |
+
+> 换用别的版本/渠道的安装包时，`Versions/<版本号>` 目录名会变，
+> `resources.pak` 里的资源 ID 也可能变，需要重新核对（见「五、风险与注意事项」）。
+
+---
+
 ## 一、最终效果
 
 **图标在哪**：夸克窗口**工具栏最右侧**、「AI总结」左边，有一个**云朵图标**，
@@ -186,6 +209,34 @@ sh install.sh
 
 ---
 
-## 六、License
+## 六、打包成安装包（DMG）
+
+改完之后可以直接把 `/Applications/Quark.app` 重新打成一个 DMG，丢给别人（或换机器）装：
+
+```bash
+# usage: sh make_dmg.sh [输出.dmg]
+sh make_dmg.sh "/path/to/QuarkMac_V2.0.7.222_mac_pf30004_no-update_cloudentry-v5_Build2073740.dmg"
+```
+
+脚本做的事（`make_dmg.sh`）：
+
+1. `cp -Rc`（clonefile，秒级，不占额外空间）把 `/Applications/Quark.app` 复制到暂存目录；
+2. 放一个 `/Applications` 软链（方便拖拽安装）；
+3. **校验**：比对暂存里的 `resources.pak` 与源一致 + `codesign --verify --deep --strict` 签名有效；
+4. `hdiutil create -format UDZO` 压成 DMG。
+
+产物和原始安装包放在同一个目录（用户环境里是 `~/Downloads`），命名规则保持一致：
+
+```
+QuarkMac_V2.0.7.222_mac_pf30004_no-update_cloudentry_Build2073740.dmg      ← 原始基础安装包
+QuarkMac_V2.0.7.222_mac_pf30004_no-update_cloudentry-v5_Build2073740.dmg   ← 本次改动后的成品
+```
+
+> 安装到别的机器时：因为是自签名（`-s -`）且未公证，Gatekeeper 会拦。
+> 拖进 `/Applications` 后执行一次 `xattr -cr /Applications/Quark.app` 即可（或右键 → 打开）。
+
+---
+
+## 七、License
 
 MIT，见 [LICENSE](LICENSE)。
